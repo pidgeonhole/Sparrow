@@ -62,7 +62,6 @@
                                 return e;
                             })
                         });
-                        console.log(this.categories);
                     },
                     (error) => {
                         console.error("Trouble getting data");

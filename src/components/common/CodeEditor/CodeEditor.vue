@@ -142,13 +142,11 @@
                     language: this.lang.toLowerCase()
                 })
                         .then((res) => {
-                            console.log(res);
                             this.results = res.data;
                             $('#resultsModal').modal();
                             this.isLoading = false;
                         })
                         .catch((err) => {
-                            console.error(err);
                             alert('Trouble connecting with the server');
                             this.isLoading = false;
                         });

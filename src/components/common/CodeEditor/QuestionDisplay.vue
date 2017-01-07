@@ -20,7 +20,7 @@
             nameCapture: Function
         },
         data(){
-            return{
+            return {
                 desc: "",
                 qtitle: ""
             }
@@ -38,20 +38,25 @@
             let id = this.$route.params.id;
 
             this.$http.get(`problems/${id}`)
-                .then((res) => {
-                    let data = res.data;
+                    .then((res) => {
+                        let data = res.data;
 
-                    this.qtitle = data.title;
-                    this.desc = data.description;
-                    this.nameCapture(data.title);
-                })
-                .catch((err) => {
-                    console.error(err);
-                })
+                        this.qtitle = data.title;
+                        this.desc = data.description;
+                        this.nameCapture(data.title);
+                    })
+                    .catch((err) => {
+                        this.qtitle = "Something's amiss.. :(";
+                        this.desc = "The question requested cannot be detected in the server. " +
+                                "We'll be redirecting you shortly";
+
+                        setTimeout(() => {
+                            this.$router.push({name: 'problem-home'});
+                        }, 5000);
+
+                    })
         }
     }
-
-
 
 
 </script>
