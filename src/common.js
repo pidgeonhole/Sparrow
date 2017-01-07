@@ -13,8 +13,8 @@ Vue.prototype.$http = axios;        // Setup function prototype
 
 
 // Component imports
-import Problems from './Problems.vue'
-import {problem_routes} from './routes/common_routes'
+import Problems from './features/Problems.vue'
+import {problem_routes} from './routes/common'
 
 const problem_router = new VueRouter({
     routes: problem_routes,

@@ -68,9 +68,6 @@
                     }
             )
 
-        },
-        updated() {
-            // $('.collapse').collapse();  // Expand all. Collapsible handled by Bootstrap 4.
         }
     }
 </script>

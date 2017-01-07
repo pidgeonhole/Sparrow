@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <question-display :nameCapture="grabName"></question-display>
+            <problem-display :nameCapture="grabName"></problem-display>
         </div>
 
         <div style="height: 30em">
@@ -105,7 +105,7 @@
 <script type="text/babel">
 
     import Editor from './Editor.vue'
-    import QuestionDisplay from './QuestionDisplay.vue'
+    import ProblemDisplay from './ProblemDisplay.vue'
 
     // Change supported languages here. Require highlights from Editor.vue
     const languages = ['Python', 'R'];
@@ -154,7 +154,7 @@
         },
         components: {
             'editor': Editor,
-            'question-display': QuestionDisplay
+            'problem-display': ProblemDisplay
         }
     }
 

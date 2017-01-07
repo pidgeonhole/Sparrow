@@ -4,7 +4,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
-        common: './src/common.js'
+        "common": './src/common.js',
+        "admin": './src/admin.js'
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -28,9 +29,12 @@ module.exports = {
                 }
             },
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/
+                exclude: 'node_modules/',
+                query: {
+                    compact: true
+                }
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
@@ -50,7 +54,8 @@ module.exports = {
         alias: {
             'vue$': 'vue/dist/vue.common.js',
             'assets': path.resolve(__dirname, './src/assets'),
-            'katex': path.resolve(__dirname, './src/assets/katex/katex.min.js')
+            'katex': path.resolve(__dirname, './src/assets/katex/katex.min.js'),
+            'components': path.resolve(__dirname, './src/components')
         }
     },
     devServer: {
