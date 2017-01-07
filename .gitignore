@@ -1,0 +1,12 @@
+.DS_Store
+node_modules/
+dist/
+npm-debug.log
+
+# Unneeded files
+index.html
+
+# JetBrains / Users Specific Stuff
+.idea/
+.idea/workspace.xml
+.idea/tasks.xml
