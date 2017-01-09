@@ -1,9 +1,11 @@
-import QuestionsList from '../components/admin/Questions/QuestionList.vue'
-import QuestionEdit from '../components/admin/Questions/QuestionEdit.vue'
+import QuestionsList from 'components/admin/Questions/QuestionList.vue'
+import QuestionEdit from 'components/admin/Questions/QuestionEdit.vue'
+import QuestionAdd from 'components/admin/Questions/QuestionAdd.vue'
 
 export const question_routes = [
     {path: '/admin/questions', component: QuestionsList, name: 'questions-home'},
-    {path: '/admin/questions/:id', component: QuestionEdit}
+    {path: '/admin/questions/add', component: QuestionAdd, name: 'question-add'},
+    {path: '/admin/questions/:id/edit', component: QuestionEdit},
 ];
 
 /*

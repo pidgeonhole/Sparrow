@@ -1,6 +1,7 @@
 <template>
     <div>
-        <v-tables :columns="columns" :data="questions" :unsortable="unsortable" :html-cols="htmlCols"></v-tables>
+        <v-tables :columns="columns" :values="questions" :unsortable="unsortable" :html-cols="htmlCols"></v-tables>
+
     </div>
 </template>
 
@@ -37,27 +38,21 @@
                             let name = category.name;
 
                             category.problems.forEach(prob => {
-                                let action = `<a href='questions/${prob.category_id}'
-                                                 data-toggle="tooltip"
-                                                 data-placement="right"
-                                                 title="Edit">
-                                                    <i class="material-icons">mode_edit</i>
-                                                 </a>`;
+
                                 questions.push({
                                     ID: prob.category_id,
                                     Title: prob.title,
                                     Category: name,
-                                    Actions: `<a href='${prob.category_id}' data-toggle="tooltip" data-placement="right" title="Edit"><i class="material-icons">mode_edit</i></a>`
+                                    Actions: {
+                                        type: 'link',
+                                        endpoint: `/admin/questions/${prob.id}/edit`,
+                                        icon: 'mode_edit'
+                                    }
                                 });
                             })
                         });
 
                         this.questions = questions;
-
-                        // Initialize all tooltips
-                        $(function () {
-                            $('[data-toggle="tooltip"]').tooltip()
-                        });
 
                     })
                     .catch(error => {

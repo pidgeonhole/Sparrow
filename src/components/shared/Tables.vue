@@ -1,22 +1,22 @@
 <template>
     <div class="container">
         <form class="form">
-                <div class="form-group">
-                    <label for="filter-key">Search Bar</label>
-                    <input class="form-control" id="filter-key" type="text" v-model="filterKey" title="Filter Key">
-                </div>
+            <div class="form-group">
+                <label for="filter-key">Search Bar</label>
+                <input class="form-control" id="filter-key" type="text" v-model="filterKey" title="Filter Key">
+            </div>
 
-                <div>
-                    <label>Category Filter</label>
-                    <multiselect
-                            v-model="selectedCategories"
-                            :options="categories"
-                            :multiple="true"
-                            placeholder="Filter Categories"
-                            :close-on-select="false"
-                            :clear-on-select="false"
-                            :hide-selected="true"></multiselect>
-                </div>
+            <div>
+                <label>Category Filter</label>
+                <multiselect
+                        v-model="selectedCategories"
+                        :options="categories"
+                        :multiple="true"
+                        placeholder="Filter Categories"
+                        :close-on-select="false"
+                        :clear-on-select="false"
+                        :hide-selected="true"></multiselect>
+            </div>
 
         </form>
         <br class="row">
@@ -28,7 +28,7 @@
                         @click="sortBy(key)"
                         :class="{ active: sortKey == key}">
                         <div>
-                            {{ key | capitalize }} <span class="arrow"
+                            {{ key | capitalize }} <span v-if="canSort(key)" class="arrow"
                                                          :class="sortOrders[key] > 0 ? 'up' : 'down'"> </span>
                         </div>
                     </th>
@@ -36,9 +36,21 @@
                 </thead>
                 <tbody>
                 <tr v-for="entry in filteredData">
-                    <td v-for="key in columns">
-                        <div v-if="isHtml(key)" v-html="entry[key]"></div>
-                        <div v-else> {{ entry[key] }}</div>
+
+                    <td v-for="value in entry">
+                        <div v-if="!value.type">
+                            {{ value }}
+                        </div>
+                        <div v-else-if="value.type === 'html'" v-html="value"></div>
+                        <div v-else-if="value.type === 'link'">
+                            <router-link :to="value.endpoint">
+                                <span>
+                                    <i class="material-icons" v-if="value.icon">{{ value.icon }}</i>
+                                    {{ value.text }}
+                                </span>
+                            </router-link>
+                        </div>
+                        <div v-else> Unknown Value Type</div>
                     </td>
                 </tr>
                 </tbody>
@@ -57,25 +69,15 @@
             "multiselect": Multiselect
         },
         props: {
-            data: Array,
+            values: Array,
             columns: Array,
             sortable: {
                 type: Array,
-                default: () => {
-                    return []
-                }
+                default: () => []
             },
             unsortable: {
                 type: Array,
-                default: () => {
-                    return []
-                }
-            },
-            htmlCols: {
-                type: Array,
-                default: () => {
-                    return []
-                }
+                default: () => []
             }
         },
         data(){
@@ -85,20 +87,58 @@
                 sortOrders[key] = 1
             });
 
+            let _sortable = [];
+            let _unsortable = [];
+            if (this.sortable.length === 0 &&
+                    this.unsortable.length === 0) {
+
+                _sortable = this.columns;
+
+            } else if (this.sortable.length === 0 &&
+                    this.unsortable.length < this.columns.length &&
+                    this.unsortable.length > 0) {
+
+                let columns = new Set(this.columns);
+                let b = new Set(this.unsortable);
+
+                let difference = new Set([...columns].filter(x => !b.has(x)));
+                _sortable = Array.from(difference);
+                _unsortable = Array.from(this.unsortable);
+
+            } else if (this.unsortable.length === 0 &&
+                    this.sortable.length <= this.columns.length &&
+                    this.sortable.length > 0) {
+
+                let columns = new Set(this.columns);
+                let b = new Set(this.sortable);
+
+                let difference = new Set([...columns].filter(x => !b.has(x)));
+                _unsortable = Array.from(difference);
+                _sortable = Array.from(this.unsortable);
+            }
+
             return {
                 filterKey: '',
+                selectedCategories: [],
                 sortKey: '',
                 sortOrders,
-                categories: [],
-                selectedCategories: []
+                _sortable,
+                _unsortable
             }
         },
         computed: {
+            categories () {
+                let s = new Set();
+                for (let i of this.values) {
+                    s.add(i.Category);
+                }
+                return [...s]
+            },
             filteredData() {
                 let sortKey = this.sortKey;
                 let filterKey = this.filterKey && this.filterKey.toLowerCase();
                 let order = this.sortOrders[sortKey] || 1;
-                let data = this.data;
+                let data = this.values.slice();
 
                 if (filterKey) {
                     data = data.filter(row => {
@@ -124,50 +164,27 @@
                     })
                 }
                 return data;
-            },
-            sortKeysToSkip: function () {
-                if (this.unsortable.length > 0) {
-                    return this.unsortable
-                }
-
-                if (this.sortable.length > 0 && this.sortable.length < this.columns.length) {
-                    let a = new Set(this.columns);
-                    let b = new Set(this.sortable);
-                    let difference = new Set([...a].filter(x => !b.has(x)));
-                    return Array.from(difference);
-                }
-
-                return [];
             }
         },
         methods: {
-            isHtml: function (key) {
-                for (let i of this.htmlCols) {
-                    if (i === key)
-                        return true;
-                }
-                return false;
-            },
             sortBy (key) {
                 this.sortKey = key;
-                for (let i of this.sortKeysToSkip) {
-                    if (key === i)
-                        return;
+                if (this.canSort(key)) {
+                    this.sortOrders[key] = this.sortOrders[key] * -1;
                 }
-                this.sortOrders[key] = this.sortOrders[key] * -1;
+            },
+            canSort (key) {
+                for (let i of this.$data._unsortable.slice()) {
+                    if (key === i)
+                        return false
+                }
+                return true;
             }
         },
         filters: {
             capitalize(str) {
                 return str.charAt(0).toUpperCase() + str.slice(1);
             }
-        },
-        beforeUpdate() {
-            let s = new Set();
-            for (let i of this.data) {
-                s.add(i.Category);
-            }
-            this.categories = [...s];
         }
     }
 
@@ -199,6 +216,10 @@ th:hover {
   border-right: 0.4em solid transparent;
   border-bottom: 0.4em solid black;
 }
+
+
+
+
 
 
 
