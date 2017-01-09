@@ -1,0 +1,107 @@
+.mbtn {
+    position: relative;
+    overflow: hidden;
+    background-color: #26A69A;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 0.2em;
+}
+
+.mbtn:hover, .mbtn:focus {
+    background-color: #00695C;
+}
+
+.mbtn:after {
+    content: "";
+    background: rgba(255, 255, 255, 0.3);
+    display: block;
+    position: absolute;
+    border-radius: 50%;
+    padding-top: 240%;
+    padding-left: 240%;
+    margin-top: -120%;
+    margin-left: -120%;
+    opacity: 0;
+    transition: all 1s
+}
+
+.mbtn:active:after {
+    padding-top: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-left: 0;
+    opacity: 1;
+    transition: 0.2s
+}
+
+.mbtn.red {
+    background-color: #ef5350;
+}
+
+.mbtn.red:hover, .mbtn.red:focus {
+    background-color: #c62828;
+}
+
+.mbtn.grey {
+    background-color: #78909C;
+}
+
+.mbtn.grey:hover, .mbtn.grey:focus {
+    background-color: #37474F;
+}
+
+.mbtn.pink {
+    background-color: #EC407A;
+}
+
+.mbtn.pink:hover, .mbtn.pink:focus {
+    background-color: #AD1457;
+}
+
+.mbtn.purple {
+    background-color: #AB47BC;
+}
+
+.mbtn.purple:hover, .mbtn.purple:focus {
+    background-color: #AD1457;
+}
+
+.mbtn.deep-purple {
+    background-color: #6A1B9A;
+}
+
+.mbtn.deep-purple:hover, .mbtn.deep-purple:focus {
+    background-color: #4527A0;
+}
+
+.mbtn.indigo {
+    background-color: #5C6BC0;
+}
+
+.mbtn.indigo:hover, .mbtn.indigo:focus {
+    background-color: #283593;
+}
+
+.mbtn.blue {
+    background-color: #42A5F5;
+}
+
+.mbtn.blue:hover, .mbtn.blue:focus {
+    background-color: #1565C0;
+}
+
+.mbtn.light-blue {
+    background-color: #29B6F6;
+}
+
+.mbtn.light-blue:hover, .mbtn.light-blue:focus {
+    background-color: #0277BD;
+}
+
+.mbtn.cyan {
+    background-color: #26C6DA;
+}
+
+.mbtn.cyan:hover, .mbtn.cyan:focus {
+    background-color: #00838F;
+}

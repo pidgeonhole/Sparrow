@@ -21,9 +21,12 @@ const problem_router = new VueRouter({
     mode: 'history'
 });
 
-new Vue({
-    el: '#problems',
-    router: problem_router,
-    render: h => h(Problems)
-});
 
+if (document.querySelector('#problems')) {
+    new Vue({
+        el: '#problems',
+        router: problem_router,
+        render: h => h(Problems)
+    });
+
+}

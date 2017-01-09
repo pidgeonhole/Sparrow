@@ -32,8 +32,11 @@
                 vm.codeCapture(vm.text)
             });
 
-            editor.getSession().setMode(`ace/mode/${this.lang}`.toLowerCase());
-            editor.getSession().setTabSize(4);
+            editor.setOptions({
+                mode: `ace/mode/${this.lang}`.toLowerCase(),
+                tabSize: 4,
+                fontSize: 15
+            });
 
             vm.editor = editor;
         }

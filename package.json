@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.15.3",
     "brace": "^0.9.1",
+    "clipboard": "^1.5.16",
     "showdown": "^1.5.5",
     "vue": "^2.1.8",
     "vue-multiselect": "^2.0.0-beta.13",

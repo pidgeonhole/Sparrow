@@ -20,7 +20,7 @@
                 htmlCols: ['Actions']
             }
         },
-        created() {
+        mounted () {
             let config = {
                 params: {
                     expand: 'problems'

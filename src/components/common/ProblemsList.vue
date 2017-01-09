@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="container d-flex flex-column">
         <div id="all-probs" role="tablist" aria-multiselectable="true">
             <div v-for="c in categories" class="card shadow-depth-1">
 
-                <div class="card-header problem-card" role="tab" :id="c.name" data-toggle="collapse"
-                     data-parent="#all-probs" :href="c.href_id">
+                <div class="card-header problem-card" role="tab" data-toggle="collapse"
+                     data-parent="#all-probs" :href="'#' + c.ref_id">
                     <h4>{{ c.name }}</h4>
                     <small>{{ c.description}}</small>
                 </div>
@@ -73,6 +73,10 @@
 </script>
 
 <style scoped>
+
+.card {
+    margin-bottom: 1rem;
+}
 
 .router-anchor, .router-anchor:visited {
     color: #616161;

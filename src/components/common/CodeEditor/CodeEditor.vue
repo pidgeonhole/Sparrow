@@ -4,6 +4,8 @@
             <problem-display :nameCapture="grabName"></problem-display>
         </div>
 
+        <br/>
+
         <div style="height: 30em">
             <editor
                     :lang="lang"
@@ -19,17 +21,15 @@
             <div class="card">
 
                 <div class="card-header mdc-bg-indigo-600 mdc-text-grey-100 hover-pointer"
-                     role="tab">
-                    <h5>
-                        <div data-toggle="collapse"
-                             :data-parent="'#' + settings_id"
-                             :href="'#' + settings_id + '-1'">
-
-                            <i class="material-icons icon-text-align"> settings_applications </i>
-                            <span class="icon-text-align-1">Settings</span>
-
-                        </div>
-                    </h5>
+                     role="tab"
+                     data-toggle="collapse"
+                     :data-parent="'#' + settings_id"
+                     :href="'#' + settings_id + '-1'">
+                    <div class="d-flex align-items-center">
+                            <i class="material-icons icon-text-align">
+                                settings_applications </i>
+                            <span class="icon-text-align">Settings</span>
+                    </div>
                 </div>
 
                 <div class="collapse"
@@ -51,6 +51,8 @@
             </div>
         </div>
 
+        <br>
+
         <button class="mbtn btn-block"
                 :class="{'button-loading': isLoading}"
                 @click="submit"
@@ -68,20 +70,18 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h4 class="modal-title">Results for {{ name }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Results</h4>
                     </div>
                     <div class="modal-body">
-                        <h5>Question: {{ name }}</h5>
                         <p>
                             Score: {{ results.tests_passed }} / {{ results.num_tests}}
                         </p>
                         <div>
                             <ul>
                                 <li v-for="(item, index) in results.results">
-
                                     Test Case {{ index + 1 }}:
                                     <span v-if="item.result==='passed'" class="mdc-text-teal-800"> Passed </span>
                                     <span v-else class="mdc-text-red-800"> Failed </span>
@@ -166,14 +166,14 @@ h5 {
 }
 
 .icon-text-align {
-    vertical-align: bottom;
-    font-size: 1.5rem;
+    font-size: 2rem !important;
     font-weight: 100;
+    margin-right: 0.25rem;
 }
 
 .icon-text-align-3 {
     vertical-align: middle;
-    font-size: 3rem;
+    font-size: 4.5rem !important;
     font-weight: 100
 }
 
@@ -181,7 +181,9 @@ h5 {
     background-color: grey;
 }
 
-
+#Code-Editor-Settings {
+    cursor: pointer;
+}
 
 
 </style>

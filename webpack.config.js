@@ -54,7 +54,6 @@ module.exports = {
         alias: {
             'vue$': 'vue/dist/vue.common.js',
             'assets': path.resolve(__dirname, './src/assets'),
-            'katex': path.resolve(__dirname, './src/assets/katex/katex.min.js'),
             'components': path.resolve(__dirname, './src/components')
         }
     },
@@ -88,6 +87,10 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
+        }),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'shared'
         })
     ])
 }
