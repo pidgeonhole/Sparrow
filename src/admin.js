@@ -9,6 +9,7 @@ Vue.use(VueRouter);
 
 import axios from 'axios'
 import {ROOKERY} from './shared_info'
+import {admin_store} from './store/store'
 
 Vue.use(VueRouter);                 // Setup router
 
@@ -27,6 +28,7 @@ const question_setter_router = new VueRouter({
 if (document.querySelector('#admin-questions')) {
     new Vue({
         el: '#admin-questions',
+        store: admin_store,
         router: question_setter_router,
         render: h => h(Question)
     });

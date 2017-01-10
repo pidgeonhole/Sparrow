@@ -7,37 +7,42 @@ export const syntaxHighlighter = function () {
             type: 'html',
             filter: function (html) {
                 let regex = /<pre>\s*<code class="(\S+)[\s\w\-]*">([\s\S]*)<\/code><\/pre>/g;
-                let result;
 
-                while ((result = regex.exec(html)) !== null) {
-                    let lang = result[1];
-                    let code = result[2];
+                let matches = html.match(regex);
 
-                    code = code.replace(/&lt;/g, '<')
-                        .replace(/&gt;/g, '>')
-                        .replace(/&amp;/g, '&');
+                if (!matches)
+                    return html;
+                matches[0].split('</pre>').forEach(e => {
 
-                    let grammer = Prism.languages[lang];
+                    regex = /<pre>\s*<code class="(\S+)[\s\w\-]*">([\s\S]*)<\/code><\/pre>/g;
+                    if (e.length > 0) {
+                        let match = e.substr(e.search("<pre>")) + "</pre>";
+                        let rg = regex.exec(match);
+                        let lang = rg[1];
 
-                    if (!grammer) {
-                        continue;
-                    }
+                        if (lang === 'katex')
+                            return;
 
-                    let highlightedCode = Prism.highlight(code, grammer, lang);
-                    let newHtml = `
+
+                        let code = rg[2].replace(/&lt;/g, '<')
+                            .replace(/&gt;/g, '>')
+                            .replace(/&amp;/g, '&');
+
+                        let grammer = Prism.languages[lang];
+
+                        if (!grammer)
+                            return;
+
+                        let highlightedCode = Prism.highlight(code, grammer, lang);
+                        let newHtml = `
 <pre class="language-${lang}">
 <code>${highlightedCode}</code>
-</pre>`;
-                    let oldHtml = result[0];
-                    let oldHtmlIndex = result.index;
+</pre>
+`;
+                        html = html.replace(match, newHtml);
+                    }
+                });
 
-                    let beforeOldHtml = html.substring(0, oldHtmlIndex);
-                    let afterOldHtml = html.substring(oldHtmlIndex + oldHtml.length);
-
-                    html = beforeOldHtml + newHtml + afterOldHtml;
-
-                    regex.lastIndex = oldHtmlIndex + newHtml.length;
-                }
                 return html;
             }
         }
@@ -50,16 +55,21 @@ export const katexConverter = function () {
         {
             type: 'lang',
             filter: function (text) {
-                return text.replace(/\`katex\s([\S ]*)[\s]?\`/g, function (flag, match, end) {
+                return text.replace(/\`katex\s([\S ]*)[\s]?`/g, function (flag, match, end) {
                     return katex.renderToString(match)
-                })
+                });
             }
         }, {
             type: 'lang',
             filter: function (text) {
-                return text.replace(/```katex\n([\S]+)\n```/g, function (flag, match, end) {
-                    return katex.renderToString(match)
-                })
+                try {
+                    return text.replace(/```katex[\s\n]*([\S\s]+)[\s\n]*```/g, function (flag, match, end) {
+                        return katex.renderToString(match)
+                    });
+                } catch (e) {
+                    return text;
+                }
+
             }
         }];
 };

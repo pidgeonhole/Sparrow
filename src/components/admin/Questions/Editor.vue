@@ -16,23 +16,19 @@
             }
         },
         watch: {
-            initial: function(present) {
-                this.editor.setValue(present);
-            }
-        },
-        data(){
-            return {
-                msg: 'hello vue'
+            initial: function(present, previous) {
+                if (previous === "") {
+                    this.editor.setValue(this.initial, -1)
+                }
             }
         },
         mounted () {
             let editor = ace.edit("pg-ace-editor");
 
             editor.setOptions({
-                maxLines: Infinity,
+                maxLines: 30,
                 wrap: true,
                 indentedSoftWrap: true,
-                behavioursEnabled: true,
                 showLineNumbers: true,
                 mode: 'ace/mode/markdown',
                 highlightActiveLine: true,
@@ -41,13 +37,11 @@
 
             editor.$blockScrolling = Infinity;
 
+            this.editor = editor;
+
             editor.getSession().on('change', () => {
                 this.codeCapture(editor.getValue());
             });
-
-            editor.setValue(this.initial);
-
-            this.editor = editor;
         }
     }
 
@@ -56,9 +50,10 @@
 
 <style scoped>
 #pg-ace-editor {
+    min-height: 10rem;
     width: 100%;
     height: 100% !important;
-    border: black solid 0.5px;
+    border: grey solid 0.5px;
 }
 
 </style>

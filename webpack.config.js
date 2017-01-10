@@ -53,6 +53,7 @@ module.exports = {
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.common.js',
+            'shared_info': path.resolve(__dirname, './src/shared_info.js'),
             'assets': path.resolve(__dirname, './src/assets'),
             'components': path.resolve(__dirname, './src/components')
         }
@@ -88,7 +89,6 @@ if (process.env.NODE_ENV === 'production') {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'shared'
         })

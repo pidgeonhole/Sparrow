@@ -6,6 +6,7 @@ export const question_routes = [
     {path: '/admin/questions', component: QuestionsList, name: 'questions-home'},
     {path: '/admin/questions/add', component: QuestionAdd, name: 'question-add'},
     {path: '/admin/questions/:id/edit', component: QuestionEdit},
+    {path: '/admin/questions/:id*', redirect: '/admin/questions/:id/edit'}
 ];
 
 /*
